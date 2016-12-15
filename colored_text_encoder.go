@@ -23,6 +23,7 @@ type textEncoder struct {
 	bytes       []byte
 	timeFmt     string
 	firstNested bool
+	color       int
 }
 
 // NewTextEncoder creates a line-oriented text encoder whose output is optimized
@@ -145,8 +146,8 @@ func (enc *textEncoder) addKey(key string) {
 	} else {
 		enc.firstNested = false
 	}
-	color := (len(enc.bytes) % 7) + 1
-	enc.bytes = append(enc.bytes, []byte(fmt.Sprintf("\x1b[3%d;1m%s\x1b[0m", color, key))...)
+	enc.color += 1
+	enc.bytes = append(enc.bytes, []byte(fmt.Sprintf("\x1b[3%d;1m%s\x1b[0m", enc.color, key))...)
 	enc.bytes = append(enc.bytes, '=')
 }
 
